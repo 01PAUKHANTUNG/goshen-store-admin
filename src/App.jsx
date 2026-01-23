@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Navbar from './component/Navbar'
+import Navbar from './component/Navbar.jsx'
 import { Route, Routes } from 'react-router'
-import AddProduct from './pages/addProduct'
-import OrderList from './pages/OrderList'
+import AddProduct from './pages/AddProduct.jsx'
+import OrderList from './pages/OrderList.jsx'
 
-import Login from './pages/Login'
+import Login from './pages/Login.jsx'
 
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
