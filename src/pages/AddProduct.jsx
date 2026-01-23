@@ -3,6 +3,7 @@ import upload from '../assets/upload.png'
 import subCategoryArray from '../assets/subCategory.js'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { ToastContainer } from 'react-toastify'
 import { backendUrl } from '../App.jsx'
 
 const AddProduct = ({ token }) => {
@@ -158,6 +159,8 @@ const AddProduct = ({ token }) => {
 
   // ================= UI =================
   return (
+    <>
+    <ToastContainer />
     <div className="flex w-full ">
 
       {/* ================= FORM ================= */}
@@ -298,6 +301,7 @@ const AddProduct = ({ token }) => {
       </div>
 
     </div>
+     </>
   )
 }
 

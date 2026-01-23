@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import { backendUrl } from '../App'
 
 
@@ -27,7 +28,9 @@ const Login = ({setToken}) => {
     }
 
   return (
-    <div className='flex w-full h-full justify-center'>
+
+    <><ToastContainer />  
+       <div className='flex w-full h-full justify-center'>
        <div className='flex flex-col mt-[100px] gap-4 w-[500px] bg-slate-500 py-4 px-4 items-center rounded-md'>
           <p className='text-2xl'> LOGIN </p>
 
@@ -43,6 +46,7 @@ const Login = ({setToken}) => {
 
        </div>
     </div>
+    </>
   )
 }
 
