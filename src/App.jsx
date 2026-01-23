@@ -10,7 +10,8 @@ import Login from './pages/Login'
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const App = () => {
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState('') 
+  
   return (
     <div >
       <ToastContainer />
