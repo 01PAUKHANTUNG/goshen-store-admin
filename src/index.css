@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --admin-primary: #111111;
+        --admin-surface: #ffffff;
+        --admin-bg: #f8f9fa;
+        --radius-admin: 1.5rem;
+        --shadow-admin: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+        @apply antialiased text-gray-800 bg-[#f8f9fa];
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+}
+
+@layer components {
+    .admin-input {
+        @apply w-full px-4 py-3 bg-white border border-gray-100 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-black transition-all hover:border-gray-300;
+    }
+
+    .admin-label {
+        @apply text-xs font-black text-gray-400 uppercase tracking-widest mb-2 block;
+    }
+
+    .admin-card {
+        @apply bg-white p-8 rounded-[2rem] border border-gray-50 shadow-sm transition-all duration-300;
+    }
+}
