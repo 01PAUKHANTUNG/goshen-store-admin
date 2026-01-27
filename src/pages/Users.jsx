@@ -105,25 +105,7 @@ const Users = ({ token }) => {
                                     <p className='text-sm text-gray-900 font-bold truncate' title={user.email}>{user.email}</p>
                                 </div>
 
-                                <div className='grid grid-cols-2 gap-4'>
-                                    <div>
-                                        <span className='inline-block px-3 py-1 bg-orange-50 text-orange-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-2'>Phone</span>
-                                        <p className='text-sm text-gray-900 font-bold'>{user.phone || 'Not provided'}</p>
-                                    </div>
-                                    <div>
-                                        <span className='inline-block px-3 py-1 bg-green-50 text-green-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-2'>Joined</span>
-                                        <p className='text-sm text-gray-900 font-bold'>Recently</p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div className='mt-8 pt-6 border-t border-gray-50 flex justify-between items-center relative'>
-                                <button className='text-xs font-black text-gray-900 uppercase tracking-widest hover:text-black transition-colors flex items-center gap-2'>
-                                    View Profile
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                                    </svg>
-                                </button>
                             </div>
                         </div>
                     ))}

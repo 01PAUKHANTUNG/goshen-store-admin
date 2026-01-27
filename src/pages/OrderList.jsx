@@ -135,8 +135,8 @@ const OrderList = ({ token }) => {
                 {/* Destination */}
                 <div className='col-span-1 md:border-l border-gray-100 md:pl-10'>
                   <span className='inline-block px-3 py-1 bg-orange-50 text-orange-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-4'>Shipping</span>
-                  <p className='text-lg font-black text-gray-900'>{order.shippingAddress.city}</p>
-                  <p className='text-sm text-gray-400 font-bold'>{order.shippingAddress.country}</p>
+                  <p className='text-lg font-black text-gray-900'>{order.shippingAddress.country}</p>
+                  <p className='text-sm text-gray-400 font-bold'>{order.shippingAddress.street}/{order.shippingAddress.city}</p>
                 </div>
 
                 {/* Cost */}
