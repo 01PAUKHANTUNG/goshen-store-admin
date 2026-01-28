@@ -115,11 +115,12 @@ const AddProduct = ({ token }) => {
   useEffect(() => { fetchList() }, [])
 
   return (
-    <div className='max-w-[1600px] mx-auto p-8'>
+    <div className='max-w-[1600px] mx-auto p-8 h-screen '>
+
       <ToastContainer />
 
       {/* Page Header */}
-      <div className='mb-10'>
+      <div className='mb-10 overflow-y-auto '>
         <h1 className='text-4xl font-black text-gray-900 tracking-tight mb-2'>
           {editingId ? 'Edit Product' : 'Inventory Management'}
         </h1>
@@ -129,7 +130,9 @@ const AddProduct = ({ token }) => {
       <div className='grid grid-cols-1 lg:grid-cols-12 gap-10 items-start'>
 
         {/* ================= MODERN FORM (4 cols) ================= */}
-        <form onSubmit={submitHandle} className='lg:col-span-5 admin-card sticky top-28'>
+        <form onSubmit={submitHandle} className='lg:col-span-5 admin-card hide-scrollbar overflow-y-auto max-h-[calc(100vh-120px)]'>
+
+
           <div className='space-y-8'>
 
             {/* Image Upload Area */}
@@ -231,7 +234,7 @@ const AddProduct = ({ token }) => {
         </form>
 
         {/* ================= MODERN LIST (8 cols) ================= */}
-        <div className='lg:col-span-7 space-y-6'>
+        <div className='lg:col-span-7 space-y-6 hide-scrollbar overflow-y-auto max-h-[calc(100vh-120px)]'>
           {list.map(item => (
             <div key={item._id} className='admin-card group hover:shadow-xl hover:-translate-y-1'>
               <div className='grid grid-cols-[auto_1fr_auto] gap-8 items-center'>
