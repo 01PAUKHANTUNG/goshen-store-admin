@@ -164,7 +164,7 @@ const AddProduct = ({ token }) => {
                   <option value="">Select</option>
                   <option value="Groceries">Groceries</option>
                   <option value="Beauti & Cosmetics">Beauty & Cosmetics</option>
-                  <option value="Vegetables & Fruits">Produce</option>
+                  <option value="Vegetables & Fruits">Fresh Produce</option>
                   <option value="Snacks & Drinks">Snacks</option>
                   <option value="Homewares">Homewares</option>
                   <option value="Books & Stationary">Stationery</option>
@@ -262,10 +262,17 @@ const AddProduct = ({ token }) => {
                   <div className={`w-2 h-2 rounded-full ${item.stockAvaiable ? 'bg-green-500' : 'bg-red-400'}`}></div>
                   <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>{item.stockAvaiable ? 'In Stock' : 'Sold Out'}</span>
                 </div>
+                
                 {item.bestSelling && (
                   <div className='flex items-center gap-2'>
                     <div className='w-2 h-2 rounded-full bg-amber-500'></div>
                     <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>Best Seller</span>
+                  </div>
+                )}
+                 {item.newArrive && (
+                  <div className='flex items-center gap-2'>
+                    <div className='w-2 h-2 rounded-full bg-green-500'></div>
+                    <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>New Arrive</span>
                   </div>
                 )}
               </div>
