@@ -118,7 +118,14 @@ const OrderList = ({ token }) => {
               <p className='text-gray-500 max-w-sm'>Try adjusting your search to find what you're looking for.</p>
             </div>
           ) : filteredOrders.map((order, index) => (
-            <div key={index} className='bg-white p-10 rounded-[2.5rem] border border-gray-50 shadow-sm group hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300'>
+            <div key={index} className={`p-10 rounded-[2.5rem] border shadow-sm group hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 ${!order.userId ? 'bg-amber-50 border-amber-100' : 'bg-white border-gray-50'}`}>
+              {!order.userId && (
+                <div className="mb-6 flex">
+                  <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-200">
+                    Guest Order
+                  </span>
+                </div>
+              )}
               <div className='grid grid-cols-1 md:grid-cols-7 gap-10'>
                 {/* Meta Data */}
                 <div className='col-span-1'>
