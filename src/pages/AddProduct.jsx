@@ -21,6 +21,19 @@ const AddProduct = ({ token }) => {
   const [stockAvaiable, setStockAvaibale] = useState(false)
   const [list, setList] = useState([])
   const [editingId, setEditingId] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterCategory, setFilterCategory] = useState('All')
+
+  const filteredList = list.filter(item => {
+    const matchesSearch =
+      item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.subCategory?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesCategory = filterCategory === 'All' || item.category === filterCategory;
+
+    return matchesSearch && matchesCategory;
+  })
 
   useEffect(() => {
     const result = subCategoryArray.find(item => item.category === category)
@@ -235,7 +248,41 @@ const AddProduct = ({ token }) => {
 
         {/* ================= MODERN LIST (8 cols) ================= */}
         <div className='lg:col-span-7 space-y-6 hide-scrollbar overflow-y-auto max-h-[calc(100vh-120px)]'>
-          {list.map(item => (
+
+          {/* Search & Filter Bar */}
+          <div className='sticky top-1 mx-auto w-[98%] bg-[#f8f9fa] pb-4 z-10 grid grid-cols-1 md:grid-cols-12 gap-4'>
+            <div className='md:col-span-8 relative group'>
+              <input
+                type="text"
+                placeholder="Search by name..."
+                className='pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-2xl w-full focus:outline-none focus:ring-2 focus:ring-black transition-all font-bold'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <svg className="w-5 h-5 absolute left-4 top-3.5 text-gray-400 group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+
+            <div className='md:col-span-4'>
+              <select
+                value={filterCategory}
+                onChange={(e) => setFilterCategory(e.target.value)}
+                className='w-full py-3 px-4 bg-white border border-gray-100 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-black font-bold text-gray-700 cursor-pointer hover:shadow-md transition-all appearance-none'
+                style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundPosition: `right 0.5rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `1.5em 1.5em`, paddingRight: `2.5rem` }}
+              >
+                <option value="All">All Categories</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Beauti & Cosmetics">Beauty & Cosmetics</option>
+                <option value="Vegetables & Fruits">Fresh Produce</option>
+                <option value="Snacks & Drinks">Snacks</option>
+                <option value="Homewares">Homewares</option>
+                <option value="Books & Stationary">Stationery</option>
+              </select>
+            </div>
+          </div>
+
+          {filteredList.map(item => (
             <div key={item._id} className='admin-card group hover:shadow-xl hover:-translate-y-1'>
               <div className='grid grid-cols-[auto_1fr_auto] gap-8 items-center'>
                 <div className='w-24 h-24 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100'>
@@ -262,14 +309,14 @@ const AddProduct = ({ token }) => {
                   <div className={`w-2 h-2 rounded-full ${item.stockAvaiable ? 'bg-green-500' : 'bg-red-400'}`}></div>
                   <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>{item.stockAvaiable ? 'In Stock' : 'Sold Out'}</span>
                 </div>
-                
+
                 {item.bestSelling && (
                   <div className='flex items-center gap-2'>
                     <div className='w-2 h-2 rounded-full bg-amber-500'></div>
                     <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>Best Seller</span>
                   </div>
                 )}
-                 {item.newArrive && (
+                {item.newArrive && (
                   <div className='flex items-center gap-2'>
                     <div className='w-2 h-2 rounded-full bg-green-500'></div>
                     <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>New Arrive</span>
