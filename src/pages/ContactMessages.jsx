@@ -41,6 +41,21 @@ const ContactMessages = ({ token }) => {
         }
     };
 
+    const deleteMessage = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this message?")) return;
+        try {
+            const response = await axios.post(backendUrl + '/api/contact/remove', { id }, { headers: { token } });
+            if (response.data.success) {
+                toast.success(response.data.message);
+                fetchMessages();
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
     useEffect(() => {
         fetchMessages();
     }, [token]);
@@ -123,9 +138,17 @@ const ContactMessages = ({ token }) => {
                                             </button>
                                         )}
                                         {msg.status === 'replied' && (
-                                            <div className='flex items-center gap-2'>
-                                                <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                                                <span className='text-[10px] font-black text-green-500 uppercase tracking-widest'>Responded</span>
+                                            <div className='flex flex-col items-end gap-4'>
+                                                <div className='flex items-center gap-2'>
+                                                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                                                    <span className='text-[10px] font-black text-green-500 uppercase tracking-widest'>Responded</span>
+                                                </div>
+                                                <button
+                                                    onClick={() => deleteMessage(msg._id)}
+                                                    className='px-6 py-2 border-2 border-red-50 text-red-400 hover:bg-red-50 hover:border-red-100 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all'
+                                                >
+                                                    Delete Message
+                                                </button>
                                             </div>
                                         )}
                                     </div>
