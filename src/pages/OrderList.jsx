@@ -37,6 +37,30 @@ const OrderList = ({ token }) => {
     }
   };
 
+  const paymentStatusHandler = async (event, orderId) => {
+    try {
+      console.log('💳 Payment Status Change Request:');
+      console.log('  Order ID:', orderId);
+      console.log('  New Payment Status:', event.target.value);
+
+      const response = await axios.post(backendUrl + '/api/order/payment-status', { orderId, paymentStatus: event.target.value }, { headers: { token } });
+
+      console.log('  Response:', response.data);
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchAllOrders();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error('❌ Payment Status Update Error:', error);
+      toast.error(error.message);
+    }
+  };
+
+
+
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
@@ -95,7 +119,7 @@ const OrderList = ({ token }) => {
             </div>
           ) : filteredOrders.map((order, index) => (
             <div key={index} className='bg-white p-10 rounded-[2.5rem] border border-gray-50 shadow-sm group hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300'>
-              <div className='grid grid-cols-1 md:grid-cols-6 gap-10'>
+              <div className='grid grid-cols-1 md:grid-cols-7 gap-10'>
                 {/* Meta Data */}
                 <div className='col-span-1'>
                   <span className='inline-block px-3 py-1 bg-gray-50 text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-4'>Order Meta</span>
@@ -139,13 +163,47 @@ const OrderList = ({ token }) => {
                   <p className='text-sm text-gray-400 font-bold'>{order.shippingAddress.street}/{order.shippingAddress.city}</p>
                 </div>
 
+                {/* Payment Method */}
+                <div className='col-span-1 md:border-l border-gray-100 md:pl-10'>
+                  <span className='inline-block px-3 py-1 bg-indigo-50 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-4'>Payment</span>
+                  <div className='space-y-2'>
+                    <p className='text-lg font-black text-gray-900'>
+                      {order.paymentMethod === 'COD' ? 'Cash on Delivery' :
+                        order.paymentMethod?.includes('Stripe') || order.paymentMethod === 'stripe' ? 'Stripe' :
+                          order.paymentMethod || 'N/A'}
+                    </p>
+                    <div className={`inline-block px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${order.paymentMethod === 'COD' ? 'bg-amber-100 text-amber-700' :
+                      'bg-blue-100 text-blue-700'
+                      }`}>
+                      {order.paymentMethod === 'COD' ? 'COD' : 'Online'}
+                    </div>
+                  </div>
+                </div>
+
                 {/* Cost */}
                 <div className='col-span-1 md:border-l border-gray-100 md:pl-10 text-right'>
                   <span className='inline-block px-3 py-1 bg-green-50 text-green-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-4'>Total Amount</span>
                   <p className='text-3xl font-black text-gray-900'>${order.amount.toFixed(2)}</p>
-                  <div className={`inline-block mt-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${order.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {order.paymentStatus === 'paid' ? 'Paid' : 'Unpaid'}
-                  </div>
+
+                  {/* Payment Status - Dropdown for COD, Static for others */}
+                  {order.paymentMethod === 'COD' ? (
+                    <select
+                      onChange={(event) => paymentStatusHandler(event, order._id)}
+                      value={order.paymentStatus}
+                      className={`inline-block mt-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest cursor-pointer border-2 transition-all ${order.paymentStatus === 'paid'
+                        ? 'bg-green-100 text-green-700 border-green-200 hover:border-green-400'
+                        : 'bg-red-100 text-red-700 border-red-200 hover:border-red-400'
+                        }`}
+                    >
+                      <option value="pending">Unpaid</option>
+                      <option value="paid">Paid</option>
+                    </select>
+                  ) : (
+                    <div className={`inline-block mt-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${order.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      }`}>
+                      {order.paymentStatus === 'paid' ? 'Paid' : 'Unpaid'}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -169,7 +227,7 @@ const OrderList = ({ token }) => {
                     className='pl-4 pr-10 py-2.5 border-2 border-gray-100 rounded-2xl bg-white text-sm font-black text-gray-700 focus:outline-none focus:ring-4 focus:ring-black/5 focus:border-black transition-all cursor-pointer hover:border-black'
                   >
                     <option value="Order Placed">Order Placed</option>
-                    <option value="Packing">Packing</option>
+
                     <option value="Shipped">Shipped</option>
                     <option value="Out for delivery">Out for delivery</option>
                     <option value="Delivered">Delivered</option>
