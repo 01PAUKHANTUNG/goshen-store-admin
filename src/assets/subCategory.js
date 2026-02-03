@@ -1,7 +1,7 @@
 const subCategoryArray = [
     {
         category: "Groceries",
-        array: ["Rice", "Noodles", "Cooking oil", "Salt", "Sugar", "Sauces", "Spices & seasoning", "Canned foods", "Dry beans & lentils", "Instant foods", "Dry Food", "Corn & Maize"]
+        array: ["Rice", "Noodles", "Cooking oil", "Salt", "Sugar", "Sauces", "Spices & seasoning", "Canned foods", "Dry beans & lentils", "Instant foods", "Dry food", "Corn & maize"]
     },
 
     {

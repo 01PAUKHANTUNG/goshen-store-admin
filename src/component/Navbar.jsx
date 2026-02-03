@@ -44,6 +44,14 @@ const Navbar = () => {
             >
               Inquiries
             </NavLink>
+            <NavLink
+              to='/settings'
+              className={({ isActive }) =>
+                `px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest transition-all ${isActive ? 'bg-black text-white shadow-xl shadow-black/10' : 'text-gray-400 hover:text-black hover:bg-gray-50'}`
+              }
+            >
+              Settings
+            </NavLink>
           </nav>
         </div>
 

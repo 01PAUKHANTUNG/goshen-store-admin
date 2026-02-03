@@ -5,6 +5,7 @@ import AddProduct from './pages/AddProduct.jsx'
 import OrderList from './pages/OrderList.jsx'
 import Users from './pages/Users.jsx'
 import ContactMessages from './pages/ContactMessages.jsx'
+import Settings from './pages/Settings.jsx'
 
 import Login from './pages/Login.jsx'
 
@@ -25,6 +26,7 @@ const App = () => {
             <Route path='/orderlist' element={<OrderList token={token} />} />
             <Route path='/users' element={<Users token={token} />} />
             <Route path='/contact-messages' element={<ContactMessages token={token} />} />
+            <Route path='/settings' element={<Settings token={token} />} />
 
           </Routes>
         </div>

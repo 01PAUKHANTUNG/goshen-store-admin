@@ -22,6 +22,7 @@ const AddProduct = ({ token }) => {
   const [list, setList] = useState([])
   const [editingId, setEditingId] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [loading, setLoading] = useState(false)
   const [filterCategory, setFilterCategory] = useState('All')
 
   const filteredList = list.filter(item => {
@@ -62,6 +63,7 @@ const AddProduct = ({ token }) => {
       toast.error('Please select a product image');
       return;
     }
+    setLoading(true)
     try {
       const formData = new FormData()
       formData.append('description', productDescription)
@@ -89,6 +91,8 @@ const AddProduct = ({ token }) => {
       }
     } catch (error) {
       toast.error(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -180,7 +184,7 @@ const AddProduct = ({ token }) => {
                   <option value="Vegetables & Fruits">Fresh Produce</option>
                   <option value="Snacks & Drinks">Snacks</option>
                   <option value="Homewares">Homewares</option>
-                  <option value="Books & Stationary">Stationery</option>
+                  <option value="Books & Stationery">Stationery</option>
                 </select>
               </div>
               <div>
@@ -234,8 +238,22 @@ const AddProduct = ({ token }) => {
             </div>
 
             <div className='flex gap-4 pt-4'>
-              <button className='flex-1 bg-black text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl shadow-black/10'>
-                {editingId ? 'Update Product' : 'Publish Product'}
+              <button
+                type="submit"
+                disabled={loading}
+                className={`flex-1 bg-black text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl shadow-black/10 flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                {loading ? (
+                  <>
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  editingId ? 'Update Product' : 'Publish Product'
+                )}
               </button>
               {editingId && (
                 <button type="button" onClick={resetForm} className='px-8 border-2 border-gray-100 text-gray-400 font-bold rounded-2xl hover:border-red-500 hover:text-red-500 transition-all'>
@@ -247,7 +265,7 @@ const AddProduct = ({ token }) => {
         </form>
 
         {/* ================= MODERN LIST (8 cols) ================= */}
-        <div className='lg:col-span-7 space-y-6 hide-scrollbar overflow-y-auto max-h-[calc(100vh-120px)]'>
+        <div className='lg:col-span-7 space-y-6 overflow-y-auto max-h-[calc(100vh-120px)]'>
 
           {/* Search & Filter Bar */}
           <div className='sticky top-1 mx-auto w-[98%] bg-[#f8f9fa] pb-4 z-10 grid grid-cols-1 md:grid-cols-12 gap-4'>
@@ -277,7 +295,7 @@ const AddProduct = ({ token }) => {
                 <option value="Vegetables & Fruits">Fresh Produce</option>
                 <option value="Snacks & Drinks">Snacks</option>
                 <option value="Homewares">Homewares</option>
-                <option value="Books & Stationary">Stationery</option>
+                <option value="Books & Stationery">Stationery</option>
               </select>
             </div>
           </div>
