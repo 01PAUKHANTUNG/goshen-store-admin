@@ -7,6 +7,7 @@ const OrderList = ({ token }) => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [updatingOrderId, setUpdatingOrderId] = useState(null);
 
   const fetchAllOrders = async () => {
     if (!token) return null;
@@ -25,6 +26,8 @@ const OrderList = ({ token }) => {
 
   const statusHandler = async (event, orderId) => {
     try {
+      setUpdatingOrderId(orderId); // start loading
+
       const response = await axios.post(backendUrl + '/api/order/status', { orderId, status: event.target.value }, { headers: { token } });
       if (response.data.success) {
         toast.success(response.data.message);
@@ -34,6 +37,10 @@ const OrderList = ({ token }) => {
       }
     } catch (error) {
       toast.error(error.message);
+    }
+    finally{
+      setUpdatingOrderId(null); // stop loading
+
     }
   };
 
@@ -229,17 +236,23 @@ const OrderList = ({ token }) => {
                 </div>
 
                 <div className='flex items-center gap-4'>
-                  <p className='text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]'>Update Progress:</p>
-                  <select
+                  {
+                   updatingOrderId === order._id ? <p className='text-[10px] font-black text-green-400 uppercase tracking-[0.2em]'>Updating...</p>  :  <p className='text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]'>Update Progress:</p> 
+                  }
+               
+   
+              <select
                     onChange={(event) => statusHandler(event, order._id)}
                     value={order.status}
+                    disabled={updatingOrderId === order._id}
                     className='pl-4 pr-10 py-2.5 border-2 border-gray-100 rounded-2xl bg-white text-sm font-black text-gray-700 focus:outline-none focus:ring-4 focus:ring-black/5 focus:border-black transition-all cursor-pointer hover:border-black'
                   >
+ 
                     <option value="Order Placed">Order Placed</option>
-
                     <option value="Shipped">Shipped</option>
                     <option value="Out for delivery">Out for delivery</option>
                     <option value="Delivered">Delivered</option>
+
                   </select>
                 </div>
               </div>

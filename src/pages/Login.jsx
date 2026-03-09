@@ -61,7 +61,7 @@ const Login = ({ setToken }) => {
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 type='password'
-                placeholder='••••••••'
+                placeholder='•••••••'
                 className='w-full px-6 py-4 bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-black/5 focus:ring-4 focus:ring-black/5 transition-all font-bold placeholder:text-gray-300'
                 required
               />
