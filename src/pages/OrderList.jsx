@@ -150,8 +150,8 @@ const OrderList = ({ token }) => {
                   <span className='inline-block px-3 py-1 bg-blue-50 text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-4'>Customer</span>
                   <div className='space-y-1'>
                     <p className='text-lg font-black text-gray-900 leading-tight'>{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
-                    <p className='text-xs text-gray-400 font-bold truncate' title={order.shippingAddress.email}>{order.shippingAddress.email}</p>
-                    <p className='text-sm text-gray-500 font-bold'>{order.shippingAddress.phone}</p>
+                    <p className='text-xs text-gray-400 font-bold truncate' title={order.shippingAddress.email}>Email: {order.shippingAddress.email}</p>
+                    <p className='text-sm text-gray-500 font-bold'>Phone: {order.shippingAddress.phone}</p>
                   </div>
                 </div>
 
