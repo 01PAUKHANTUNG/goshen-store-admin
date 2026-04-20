@@ -252,7 +252,7 @@ const AddProduct = ({ token }) => {
                     <span>Processing...</span>
                   </>
                 ) : (
-                  editingId ? 'Update Product' : 'Publish Product'
+                  editingId ? 'Update Product' : 'Add Product'
                 )}
               </button>
               {editingId && (
