@@ -24,6 +24,12 @@ const AddProduct = ({ token }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
   const [filterCategory, setFilterCategory] = useState('All')
+  const [stockQuantity, setStockQuantity] = useState(0)
+
+  // Auto-derive stockAvaiable from stockQuantity
+  useEffect(() => {
+    setStockAvaibale(stockQuantity > 0)
+  }, [stockQuantity])
 
   const filteredList = list.filter(item => {
     const matchesSearch =
@@ -55,6 +61,7 @@ const AddProduct = ({ token }) => {
     setBestseller(false)
     setNewArrive(false)
     setStockAvaibale(false)
+    setStockQuantity(0)
   }
 
   const submitHandle = async (e) => {
@@ -72,7 +79,8 @@ const AddProduct = ({ token }) => {
       formData.append('subCategory', sbCategory)
       formData.append('bestSelling', bestseller)
       formData.append('newArrive', newArrive)
-      formData.append('stockAvaiable', stockAvaiable)
+      formData.append('stockAvaiable', stockQuantity > 0)  // auto-derived from quantity
+      formData.append('stockQuantity', stockQuantity)
       image1 && formData.append('image1', image1)
       image2 && formData.append('image2', image2)
       image3 && formData.append('image3', image3)
@@ -124,6 +132,7 @@ const AddProduct = ({ token }) => {
     setBestseller(item.bestSelling)
     setNewArrive(item.newArrive)
     setStockAvaibale(item.stockAvaiable)
+    setStockQuantity(item.stockQuantity ?? 0)
     setExistingImage1(item.image)
     setImage1(null)
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -219,12 +228,26 @@ const AddProduct = ({ token }) => {
               />
             </div>
 
-            {/* Toggles */}
+            <div>
+              <span className='admin-label'>Stock Quantity</span>
+              <input
+                type="number"
+                value={stockQuantity === 0 ? '' : stockQuantity}
+                min="0"
+                placeholder="0"
+                onChange={e => {
+                  const val = e.target.value
+                  setStockQuantity(val === '' ? 0 : Math.max(0, parseInt(val) || 0))
+                }}
+                className='admin-input text-xl font-black'
+              />
+            </div>
+
+            {/* Toggles — In Stock is auto-derived from quantity */}
             <div className='flex flex-wrap gap-4 pt-2'>
               {[
                 { state: bestseller, set: setBestseller, label: 'Best Seller' },
                 { state: newArrive, set: setNewArrive, label: 'New Arrival' },
-                { state: stockAvaiable, set: setStockAvaibale, label: 'In Stock' }
               ].map((item, idx) => (
                 <label key={idx} className='flex-1 flex items-center justify-between p-3 border border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors'>
                   <span className='text-[10px] font-black uppercase tracking-widest text-gray-500'>{item.label}</span>
@@ -235,6 +258,15 @@ const AddProduct = ({ token }) => {
                   </div>
                 </label>
               ))}
+              {/* Stock status auto-indicator */}
+              <div className={`flex-1 flex items-center justify-between p-3 rounded-xl border ${
+                stockQuantity === 0 ? 'border-red-100 bg-red-50' : 'border-green-100 bg-green-50'
+              }`}>
+                <span className='text-[10px] font-black uppercase tracking-widest text-gray-500'>In Stock</span>
+                <span className={`text-sm font-black ${stockQuantity === 0 ? 'text-red-500' : 'text-green-600'}`}>
+                  {stockQuantity === 0 ? 'No' : stockQuantity}
+                </span>
+              </div>
             </div>
 
             <div className='flex gap-4 pt-4'>
@@ -313,7 +345,9 @@ const AddProduct = ({ token }) => {
                     <span className='text-[10px] font-black text-gray-300 uppercase tracking-widest'>{item.subCategory}</span>
                   </div>
                   <h3 className='text-lg font-black text-gray-900 leading-tight'>{item.description}</h3>
-                  <p className='text-2xl font-black text-gray-900'>${item.price.toFixed(2)}</p>
+                  <div className='flex items-center gap-4'>
+                    <p className='text-2xl font-black text-gray-900'>${item.price.toFixed(2)}</p>
+                  </div>
                 </div>
 
                 <div className='flex flex-col gap-2'>
@@ -324,8 +358,12 @@ const AddProduct = ({ token }) => {
 
               <div className='mt-6 pt-4 border-t border-gray-50 flex gap-6'>
                 <div className='flex items-center gap-2'>
-                  <div className={`w-2 h-2 rounded-full ${item.stockAvaiable ? 'bg-green-500' : 'bg-red-400'}`}></div>
-                  <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>{item.stockAvaiable ? 'In Stock' : 'Sold Out'}</span>
+                  <div className={`w-2 h-2 rounded-full ${(item.stockQuantity ?? 0) > 0 ? 'bg-green-500' : 'bg-red-400'}`}></div>
+                  <span className='text-[10px] font-black text-gray-500 uppercase tracking-widest'>
+                    {(item.stockQuantity ?? 0) > 0
+                      ? `${item.stockQuantity} units in stock`
+                      : 'Out of Stock'}
+                  </span>
                 </div>
 
                 {item.bestSelling && (
